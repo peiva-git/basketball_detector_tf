@@ -3,6 +3,7 @@ import unittest
 import tensorflow as tf
 
 from basketballdetector.models import MobileNet, ResNet152V2, EfficientNet
+from parameterized import parameterized
 
 
 class ClassificationModelTestCase(unittest.TestCase):
@@ -13,36 +14,26 @@ class ClassificationModelTestCase(unittest.TestCase):
     __RESNET_MODEL = ResNet152V2(__NUMBER_OF_CLASSES, __WIDTH, __HEIGHT)
     __EFFICIENTNET_MODEL = EfficientNet(__NUMBER_OF_CLASSES, __WIDTH, __HEIGHT)
 
-    def test_model_name(self):
+    @parameterized.expand([
+        (__MOBILENET_MODEL.model_name, 'mobilenetv2'),
+        (__RESNET_MODEL.model_name, 'resnet152v2'),
+        (__EFFICIENTNET_MODEL.model_name, 'efficientnetv2b0')
+    ])
+    def test_model_name(self, model_name: str, expected_name: str):
         self.assertEqual(
-            self.__MOBILENET_MODEL.model_name,
-            'mobilenetv2',
-            'incorrect model name'
-        )
-        self.assertEqual(
-            self.__RESNET_MODEL.model_name,
-            'resnet152v2',
-            'incorrect model name'
-        )
-        self.assertEqual(
-            self.__EFFICIENTNET_MODEL.model_name,
-            'efficientnetv2b0',
+            model_name,
+            expected_name,
             'incorrect model name'
         )
 
-    def test_model(self):
+    @parameterized.expand([
+        __MOBILENET_MODEL.model,
+        __RESNET_MODEL.model,
+        __EFFICIENTNET_MODEL.model
+    ])
+    def test_model(self, model: tf.keras.models.Model):
         self.assertIsInstance(
-            self.__MOBILENET_MODEL.model,
-            tf.keras.models.Model,
-            'incorrect model type'
-        )
-        self.assertIsInstance(
-            self.__RESNET_MODEL.model,
-            tf.keras.models.Model,
-            'incorrect model type'
-        )
-        self.assertIsInstance(
-            self.__EFFICIENTNET_MODEL.model,
+            model,
             tf.keras.models.Model,
             'incorrect model type'
         )

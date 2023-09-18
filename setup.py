@@ -10,7 +10,8 @@ dependencies = [
     'tensorflow==2.13.*',
     'numpy',
     'opencv-python==4.5.*',
-    'statistics'
+    'statistics',
+    'parameterized'
 ]
 
 setup(
