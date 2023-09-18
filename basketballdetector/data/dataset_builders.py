@@ -9,7 +9,7 @@ import numpy as np
 from basketballdetector.data import decode_image
 
 
-def configure_for_performance(dataset: tf.data.Dataset, buffer_size: int, batch_size: int) -> tf.data.Dataset:
+def _configure_for_performance(dataset: tf.data.Dataset, buffer_size: int, batch_size: int) -> tf.data.Dataset:
     dataset = dataset.cache()
     dataset = dataset.shuffle(buffer_size)
     dataset = dataset.batch(batch_size)
@@ -68,7 +68,7 @@ class ClassificationDatasetBuilder:
         return image, label
 
     def configure_datasets_for_performance(self, shuffle_buffer_size: int = 10000, input_batch_size: int = 32):
-        self.__train_dataset = configure_for_performance(self.__train_dataset, shuffle_buffer_size, input_batch_size)
+        self.__train_dataset = _configure_for_performance(self.__train_dataset, shuffle_buffer_size, input_batch_size)
         self.__validation_dataset = self.__validation_dataset.batch(input_batch_size)
 
 
@@ -160,5 +160,5 @@ class SegmentationDatasetBuilder:
         return self.__train_dataset.cardinality().numpy() + self.__validation_dataset.cardinality().numpy()
 
     def configure_datasets_for_performance(self, shuffle_buffer_size: int = 1000, input_batch_size: int = 10):
-        self.__train_dataset = configure_for_performance(self.__train_dataset, shuffle_buffer_size, input_batch_size)
+        self.__train_dataset = _configure_for_performance(self.__train_dataset, shuffle_buffer_size, input_batch_size)
         self.__validation_dataset = self.__validation_dataset.batch(input_batch_size)
