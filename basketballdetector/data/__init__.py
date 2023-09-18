@@ -1,7 +1,7 @@
 import tensorflow as tf
 
 from dataset_builders import ClassificationDatasetBuilder, SegmentationDatasetBuilder
-from sequence_builders import ClassificationSequenceBuilder
+from sequence_builders import ClassificationSequenceBuilder, PatchesSequence
 
 
 def decode_image(image_data, image_width: int = 50, image_height: int = 50, channels: int = 3):

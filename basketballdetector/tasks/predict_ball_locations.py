@@ -1,4 +1,3 @@
-import math
 import pathlib
 import time
 from collections import defaultdict
@@ -9,21 +8,7 @@ import cv2 as cv
 import tensorflow as tf
 import numpy as np
 
-
-class PatchesSequence(tf.keras.utils.Sequence):
-
-    def __init__(self, patches: [], batch_size: int = 64):
-        self.__patches = patches
-        self.__batch_size = batch_size
-
-    def __getitem__(self, index):
-        low = index * self.__batch_size
-        high = min(low + self.__batch_size, len(self.__patches))
-        patches_batch = self.__patches[low:high]
-        return np.array([patch for patch in patches_batch])
-
-    def __len__(self):
-        return math.ceil(len(self.__patches) / self.__batch_size)
+from basketballdetector.data import PatchesSequence
 
 
 def divide_frame_into_patches(frame, stride: int = 5, window_size: int = 50) -> [(int, int, cv.UMat)]:

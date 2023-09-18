@@ -72,3 +72,19 @@ class _ClassificationSequence(tf.keras.utils.Sequence):
     def __get_image(file_path: tf.Tensor):
         image_data = tf.io.read_file(file_path)
         return decode_image(image_data, image_width=112, image_height=112, channels=3)
+
+
+class PatchesSequence(tf.keras.utils.Sequence):
+
+    def __init__(self, patches: list[np.ndarray], batch_size: int = 64):
+        self.__patches = patches
+        self.__batch_size = batch_size
+
+    def __getitem__(self, index):
+        low = index * self.__batch_size
+        high = min(low + self.__batch_size, len(self.__patches))
+        patches_batch = self.__patches[low:high]
+        return np.array([patch for patch in patches_batch])
+
+    def __len__(self):
+        return math.ceil(len(self.__patches) / self.__batch_size)
