@@ -75,8 +75,11 @@ class MobileNet:
 class EfficientNet:
     # docs at https://keras.io/api/applications/efficientnet_v2/#efficientnetv2b0-function
     def __init__(self,
-                 number_of_classes: int = 2):
+                 number_of_classes: int = 2,
+                 image_width: int = 50,
+                 image_height: int = 50):
         self.__model = tf.keras.applications.EfficientNetV2B0(
+            input_shape=(image_height, image_width, 3),
             weights=None,
             classes=number_of_classes
         )
