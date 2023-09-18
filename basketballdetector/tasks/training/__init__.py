@@ -1,7 +1,7 @@
 import os
 
-from train_mobilenet_classifier import train_and_save_model
-from train_efficientnet_classifier import train_and_save_model
+from .train_mobilenet_classifier import train_and_save_model
+from .train_efficientnet_classifier import train_and_save_model
 
 
 def save_models(model_wrapper):

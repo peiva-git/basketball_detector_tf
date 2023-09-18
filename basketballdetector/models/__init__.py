@@ -2,7 +2,7 @@ import os
 
 import tensorflow as tf
 
-from classification import EfficientNet, MobileNet, ResNet152V2
+from .classification import EfficientNet, MobileNet, ResNet152V2
 
 
 def get_classification_model_callbacks(
