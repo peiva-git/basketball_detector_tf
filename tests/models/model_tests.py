@@ -38,35 +38,25 @@ class ClassificationModelTestCase(unittest.TestCase):
             'incorrect model type'
         )
 
-    def test_model_output(self):
+    @parameterized.expand([
+        __MOBILENET_MODEL.model.output_shape,
+        __RESNET_MODEL.model.output_shape,
+        __EFFICIENTNET_MODEL.model.output_shape
+    ])
+    def test_model_output(self, batch_size, number_of_classes):
         self.assertTupleEqual(
-            self.__MOBILENET_MODEL.model.output_shape,
+            (batch_size, number_of_classes),
             (None, self.__NUMBER_OF_CLASSES),
             'incorrect output shape')
-        self.assertTupleEqual(
-            self.__RESNET_MODEL.model.output_shape,
-            (None, self.__NUMBER_OF_CLASSES),
-            'incorrect output shape'
-        )
-        self.assertTupleEqual(
-            self.__EFFICIENTNET_MODEL.model.output_shape,
-            (None, self.__NUMBER_OF_CLASSES),
-            'incorrect output shape'
-        )
 
-    def test_model_input(self):
+    @parameterized.expand([
+        __MOBILENET_MODEL.model.input_shape,
+        __RESNET_MODEL.model.input_shape,
+        __EFFICIENTNET_MODEL.model.input_shape
+    ])
+    def test_model_input(self, batch_size, height, width, channels):
         self.assertTupleEqual(
-            self.__MOBILENET_MODEL.model.input_shape,
-            (None, self.__HEIGHT, self.__WIDTH, 3),
-            'incorrect input shape'
-        )
-        self.assertTupleEqual(
-            self.__RESNET_MODEL.model.input_shape,
-            (None, self.__HEIGHT, self.__WIDTH, 3),
-            'incorrect input shape'
-        )
-        self.assertTupleEqual(
-            self.__EFFICIENTNET_MODEL.model.input_shape,
+            (batch_size, height, width, channels),
             (None, self.__HEIGHT, self.__WIDTH, 3),
             'incorrect input shape'
         )
