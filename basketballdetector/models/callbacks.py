@@ -7,7 +7,7 @@ def get_classification_model_callbacks(
         model_name: str,
         early_stop_patience: int,
         reduce_lr_patience: int,
-        checkpoint_save_frequency: int) -> [tf.keras.callbacks.Callback]:
+        checkpoint_save_frequency) -> [tf.keras.callbacks.Callback]:
     model_dir_path = os.path.join('out', 'training-callback-results', model_name)
     return [
         tf.keras.callbacks.ModelCheckpoint(
@@ -43,7 +43,7 @@ def get_segmentation_model_callbacks(
         model_name: str,
         early_stop_patience: int,
         reduce_lr_patience: int,
-        checkpoint_save_frequency: int) -> [tf.keras.callbacks.Callback]:
+        checkpoint_save_frequency) -> [tf.keras.callbacks.Callback]:
     model_dir_path = os.path.join('out', 'training-callback-results', model_name)
     return [
         tf.keras.callbacks.ModelCheckpoint(
