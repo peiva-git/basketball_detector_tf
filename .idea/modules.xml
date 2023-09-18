@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/basketball_detector_classification.iml" filepath="$PROJECT_DIR$/.idea/basketball_detector_classification.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../basketball_detector_tf/.idea/basketball_detector_tf.iml" filepath="$PROJECT_DIR$/../basketball_detector_tf/.idea/basketball_detector_tf.iml" />
     </modules>
   </component>
 </project>

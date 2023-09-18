@@ -3,10 +3,11 @@
 :basketball: **BasketballDetector** is a deep-learning based tool
 that enables automatic ball detection in basketball broadcast videos.
 
-This repository contains the BasketballDetector implementation using a
+This repository contains the **BasketballDetector** implementation using a
 classification approach instead of a segmentation one.
 It also contains some of the first attempts to address the problem
-with simple segmentation models implemented in tensorflow from scratch.
+with simple segmentation models implemented in 
+[tensorflow](https://www.tensorflow.org/) from scratch.
 
 Please note that **this work has been discarded** in favor of the
 segmentation approach using SOTA real-time segmentation models, which
