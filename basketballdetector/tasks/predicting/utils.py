@@ -3,8 +3,6 @@ import pathlib
 import cv2 as cv
 import numpy as np
 
-from basketballdetector.tasks.predicting.predict_ball_locations import __find_max_pixel
-
 
 def divide_frame_into_patches(frame: np.ndarray, stride: int = 5, window_size: int = 50) -> [(int, int, np.ndarray)]:
     # could try out with a stride of 10 and a window_size of 100 as well
@@ -86,3 +84,9 @@ def annotate_frame(frame: np.ndarray,
         color=(0, 255, 0)
     )
     return bounding_box, mask
+
+
+def __find_max_pixel(heatmap: np.ndarray) -> (int, int):
+    max_index = heatmap.argmax()
+    _, heatmap_width = heatmap.shape
+    return max_index - int(max_index / heatmap_width) * heatmap_width, int(max_index / heatmap_width)

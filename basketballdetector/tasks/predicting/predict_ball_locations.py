@@ -58,12 +58,6 @@ def __iterate_over_patch(index, patch_indexes_by_pixel, patch_position_x, patch_
         patch_indexes_by_pixel[(row, column)].add(index)
 
 
-def __find_max_pixel(heatmap: np.ndarray) -> (int, int):
-    max_index = heatmap.argmax()
-    _, heatmap_width = heatmap.shape
-    return max_index - int(max_index / heatmap_width) * heatmap_width, int(max_index / heatmap_width)
-
-
 def write_detections_video(input_video_path: str,
                            target_video_path: str,
                            model_path: str):
