@@ -8,7 +8,7 @@ from random import shuffle
 import tensorflow as tf
 import numpy as np
 
-from basketballdetector.data import decode_image
+from basketballdetector.data.utils import decode_image
 
 
 class ClassificationSequenceBuilder:
@@ -72,6 +72,10 @@ class _ClassificationSequence(tf.keras.utils.Sequence):
     def __get_image(file_path: tf.Tensor):
         image_data = tf.io.read_file(file_path)
         return decode_image(image_data, image_width=112, image_height=112, channels=3)
+
+    @property
+    def class_names(self):
+        return self.__class_names
 
 
 class PatchesSequence(tf.keras.utils.Sequence):

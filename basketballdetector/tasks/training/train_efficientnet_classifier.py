@@ -1,10 +1,10 @@
 from basketballdetector.data import ClassificationSequenceBuilder
-from basketballdetector.models import get_classification_model_callbacks
+from basketballdetector.models.callbacks import get_classification_model_callbacks
 from basketballdetector.models.classification import EfficientNet
 
 import tensorflow as tf
 
-from basketballdetector.tasks.training import save_models
+from basketballdetector.tasks.training.saving import save_models
 
 
 def train_and_save_model():
