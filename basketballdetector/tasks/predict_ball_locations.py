@@ -67,7 +67,7 @@ def obtain_predictions(frame: np.ndarray,
 
 
 def annotate_frame_with_ball_patches(frame: np.ndarray,
-                                     patches_with_positions: list[int, int, np.ndarray],
+                                     patches_with_positions: list[(int, int, np.ndarray)],
                                      predictions, window_size: int = 50,
                                      threshold: float = 0.5) -> np.ndarray:
     for index, (height_coordinate, width_coordinate, image_patch) in enumerate(patches_with_positions):
@@ -87,8 +87,8 @@ def annotate_frame_with_ball_patches(frame: np.ndarray,
 
 
 def obtain_heatmap(frame: np.ndarray,
-                   predictions: list[int, int],
-                   patches_with_positions: list[int, int, np.ndarray],
+                   predictions: list[(int, int)],
+                   patches_with_positions: list[(int, int, np.ndarray)],
                    window_size: int = 50):
     frame_height, frame_width, _ = frame.shape
     heatmap = np.zeros((frame_height, frame_width), np.float32)
@@ -107,7 +107,7 @@ def obtain_heatmap(frame: np.ndarray,
 
 
 def __map_pixels_to_patch_indexes(patch_indexes_by_pixel: dict,
-                                  patches_with_positions: list[int, int, np.ndarray],
+                                  patches_with_positions: list[(int, int, np.ndarray)],
                                   window_size: int):
     for index, (patch_position_y, patch_position_x, _) in enumerate(patches_with_positions):
         __iterate_over_patch(index, patch_indexes_by_pixel, patch_position_x, patch_position_y, window_size)
@@ -165,10 +165,10 @@ def write_detections_video(input_video_path: str,
             break
         print(f'Processing frame {counter} out of {int(capture.get(cv.CAP_PROP_FRAME_COUNT))}')
         start = time.time()
-        _, patches_predictions = obtain_predictions(
+        patches_with_positions, patches_predictions = obtain_predictions(
             image, str(model_path), stride=10, window_size=50
         )
-        heatmap = obtain_heatmap(image, patches_predictions, window_size=50, stride=10)
+        heatmap = obtain_heatmap(image, patches_predictions, patches_with_positions, window_size=50)
         annotate_frame(image, heatmap)
         out.write(image)
         end = time.time()
@@ -209,7 +209,7 @@ def write_image_sequence_from_video(input_video_path: str,
             image, str(model_path), window_size=50, stride=10
         )
         print('Building heatmap from predictions...')
-        heatmap = obtain_heatmap(image, patches_predictions, patches_with_positions, window_size=50, stride=10)
+        heatmap = obtain_heatmap(image, patches_predictions, patches_with_positions, window_size=50)
         _, mask = annotate_frame(image, heatmap)
         cv.imwrite(str(target_path / f'frame_{counter}.png'), image)
         cv.imwrite(str(target_path / f'heatmap_{counter}.png'), heatmap)
