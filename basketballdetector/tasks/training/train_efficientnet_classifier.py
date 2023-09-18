@@ -6,7 +6,8 @@ import tensorflow as tf
 
 from basketballdetector.tasks.training import save_models
 
-if __name__ == '__main__':
+
+def train_and_save_model():
     builder = ClassificationSequenceBuilder('/home/ubuntu/classification_dataset/pallacanestro_trieste/', 8)
     train_sequence, val_sequence = builder.training_sequence, builder.validation_sequence
 
@@ -36,3 +37,6 @@ if __name__ == '__main__':
 
     save_models(classifier)
 
+
+if __name__ == '__main__':
+    train_and_save_model()
