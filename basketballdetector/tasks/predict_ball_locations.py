@@ -11,7 +11,7 @@ import numpy as np
 from basketballdetector.data import PatchesSequence
 
 
-def divide_frame_into_patches(frame, stride: int = 5, window_size: int = 50) -> [(int, int, cv.UMat)]:
+def divide_frame_into_patches(frame: np.ndarray, stride: int = 5, window_size: int = 50) -> [(int, int, np.ndarray)]:
     # could try out with a stride of 10 and a window_size of 100 as well
     # the origin of the coordinates' system is in the upper left corner of the image
     # with the x-axis facing to the right, and the y-axis facing down
@@ -37,9 +37,11 @@ def divide_frame_into_patches(frame, stride: int = 5, window_size: int = 50) -> 
     return patches
 
 
-def write_frame_patches_to_disk(frame, target_directory: str,
-                                stride: int = 5, window_size: int = 50,
-                                verbose: bool = True):
+def write_frame_patches_to_disk(frame: np.ndarray,
+                                target_directory: str,
+                                stride: int = 5,
+                                window_size: int = 50,
+                                verbose: bool = False):
     target = pathlib.Path(target_directory)
     count = 1
     image_patches = divide_frame_into_patches(frame, stride, window_size)
@@ -51,10 +53,10 @@ def write_frame_patches_to_disk(frame, target_directory: str,
         count += 1
 
 
-def obtain_predictions(frame,
+def obtain_predictions(frame: np.ndarray,
                        model_path: str,
                        stride: int = 5,
-                       window_size: int = 50) -> ([int, int, cv.UMat], [int, int]):
+                       window_size: int = 50) -> ([int, int, np.ndarray], [int, int]):
     model_path = pathlib.Path(model_path)
     patches_with_positions = divide_frame_into_patches(frame, stride=stride, window_size=window_size)
     patches_only = [element[2] for element in patches_with_positions]
@@ -64,8 +66,10 @@ def obtain_predictions(frame,
     return patches_with_positions, predictions
 
 
-def annotate_frame_with_ball_patches(frame, patches_with_positions, predictions, window_size: int = 50,
-                                     threshold: float = 0.9) -> cv.UMat:
+def annotate_frame_with_ball_patches(frame: np.ndarray,
+                                     patches_with_positions: list[int, int, np.ndarray],
+                                     predictions, window_size: int = 50,
+                                     threshold: float = 0.5) -> np.ndarray:
     for index, (height_coordinate, width_coordinate, image_patch) in enumerate(patches_with_positions):
         prediction = predictions[index]
         if prediction[0] >= threshold:
@@ -82,19 +86,17 @@ def annotate_frame_with_ball_patches(frame, patches_with_positions, predictions,
     return frame
 
 
-def obtain_heatmap(frame, predictions, patches_with_positions, window_size: int = 50, stride: int = 10):
+def obtain_heatmap(frame: np.ndarray,
+                   predictions: list[int, int],
+                   patches_with_positions: list[int, int, np.ndarray],
+                   window_size: int = 50):
     frame_height, frame_width, _ = frame.shape
     heatmap = np.zeros((frame_height, frame_width), np.float32)
-    number_of_width_windows = int(frame_width / stride) - int(window_size / stride)
-    number_of_height_windows = int(frame_height / stride) - int(window_size / stride)
     patch_indexes_by_pixel = defaultdict(set)
     print('Building pixel -> indexes dictionary...')
     map_pixels_to_patch_indexes(patch_indexes_by_pixel, patches_with_positions, window_size)
     for row, column in product(range(frame_height), range(frame_width)):
         pixel_indexes = patch_indexes_by_pixel[(row, column)]
-            # __get_indexes(row, column,
-            #                           number_of_height_windows, number_of_width_windows,
-            #                           window_size, stride)
         print(f'Found indexes for pixel ({row},{column})')
         if len(pixel_indexes) != 0:
             patches_ball_probabilities = [predictions[patch_index][0] for patch_index in pixel_indexes]
@@ -104,129 +106,9 @@ def obtain_heatmap(frame, predictions, patches_with_positions, window_size: int 
     return heatmap_rescaled.astype(np.uint8, copy=False)
 
 
-def patch_indexes_from_coordinates(row: int, column: int,
-                                   frame_height: int, frame_width: int,
-                                   window_size: int = 50, stride: int = 10) -> list[int]:
-    number_of_width_windows = int(frame_width / stride) - int(window_size / stride)
-    number_of_height_windows = int(frame_height / stride) - int(window_size / stride)
-    return __get_indexes(row, column, number_of_height_windows, number_of_width_windows, window_size, stride)
-
-
-def __get_indexes(row: int, column: int,
-                  number_of_height_windows: int, number_of_width_windows: int,
-                  window_size: int = 50, stride: int = 10) -> list[int]:
-    # comments assuming default values
-    # column < 40 (less than 5 indexes per row)
-    if column < stride * (int(window_size / stride) - 1):
-        # rows < 50
-        if row < stride * (int(window_size / stride)):
-            result = []
-            for mult in range(int(row / stride) + 1):
-                result.extend([i for i in range(number_of_width_windows * mult,
-                                                number_of_width_windows * mult + int(column / stride) + 1)])
-            return result
-        # 50 <= row < 460
-        if stride * (int(window_size / stride)) \
-                <= row < stride * number_of_height_windows:
-            result = []
-            for mult in range(int((row - window_size) / stride) + 1, int(row / stride) + 1):
-                result.extend([
-                    i for i in
-                    range(number_of_width_windows * mult + int(column / window_size),
-                          number_of_width_windows * mult + int(column / stride) + 1)
-                ])
-            return result
-        # 460 <= row < 510
-        if stride * number_of_height_windows \
-                <= row < stride * number_of_height_windows + window_size:
-            result = []
-            for mult in range(int((row - window_size) / stride), number_of_height_windows):
-                result.extend([
-                    i for i in
-                    range(number_of_width_windows * mult + int(column / window_size),
-                          number_of_width_windows * mult + int(column / stride) + 1)
-                ])
-            return result
-        else:
-            return []
-
-    # 40 <= column < 970
-    if stride * (int(window_size / stride) - 1) \
-            <= column < stride * (number_of_width_windows - int(window_size / stride)) + window_size:
-        # row < 50
-        if row < stride * (int(window_size / stride)):
-            result = []
-            for mult in range(int(row / stride) + 1):
-                result.extend([
-                    i for i in
-                    range(int(column / stride) - int(window_size / stride) + 1 + number_of_width_windows * mult,
-                          int(column / stride) + 1 + number_of_width_windows * mult)
-                ])
-            return result
-        # 50 <= row < 460
-        if stride * (int(window_size / stride)) \
-                <= row < stride * (number_of_height_windows - int(window_size / stride)) + window_size:
-            result = []
-            for mult in range(int((row - window_size) / stride) + 1, int(row / stride) + 1):
-                result.extend([i for i in range(number_of_width_windows * mult + int(column / window_size),
-                                                number_of_width_windows * mult + int(column / stride) + 1)])
-            return result
-        # 460 <= row < 510
-        if stride * (number_of_height_windows - int(window_size / stride)) + window_size \
-                <= row < stride * number_of_height_windows + window_size:
-            result = []
-            for mult in range(int((row - window_size) / stride), number_of_height_windows):
-                result.extend([i for i in range(number_of_width_windows * mult + int(column / window_size),
-                                                number_of_width_windows * mult + int(column / stride) + 1)])
-            return result
-        else:
-            return []
-
-    # 970 <= column < 1020
-    if stride * (number_of_width_windows - int(window_size / stride)) + window_size \
-            <= column < stride * number_of_width_windows + window_size:
-        # row < 50
-        if row < stride * (int(window_size / stride)):
-            result = []
-            for mult in range(int(row / stride) + 1):
-                result.extend(sorted([
-                    i for i in
-                    range(number_of_width_windows * (mult + 1) - 1,
-                          int(column / stride) - int(window_size / stride) + number_of_width_windows * mult - 1,
-                          -1)
-                ]))
-            return result
-        # 50 <= row < 460
-        if stride * (int(window_size / stride)) \
-                <= row < stride * (number_of_height_windows - int(window_size / stride)) + window_size:
-            result = []
-            for mult in range(int((row - window_size) / stride) + 1, int(row / stride) + 1):
-                result.extend(sorted([
-                    i for i in
-                    range(number_of_width_windows * (mult + 1) - 1,
-                          int(column / stride) - int(window_size / stride) + number_of_width_windows * mult - 1,
-                          -1)
-                ]))
-            return result
-        # 460 <= row < 510
-        if stride * (number_of_height_windows - int(window_size / stride)) + window_size \
-                <= row < stride * number_of_height_windows + window_size:
-            result = []
-            for mult in range(int((row - window_size) / stride), number_of_height_windows):
-                result.extend(sorted([
-                    i for i in
-                    range(number_of_width_windows * (mult + 1) - 1,
-                          int(column / stride) - int(window_size / stride) + number_of_width_windows * mult - 1,
-                          -1)
-                ]))
-            return result
-        else:
-            return []
-    else:
-        return []
-
-
-def map_pixels_to_patch_indexes(patch_indexes_by_pixel, patches_with_positions, window_size: int):
+def map_pixels_to_patch_indexes(patch_indexes_by_pixel: dict,
+                                patches_with_positions: list[int, int, np.ndarray],
+                                window_size: int):
     for index, (patch_position_y, patch_position_x, _) in enumerate(patches_with_positions):
         iterate_over_patch(index, patch_indexes_by_pixel, patch_position_x, patch_position_y, window_size)
 
