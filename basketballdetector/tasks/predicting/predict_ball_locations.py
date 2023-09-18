@@ -119,17 +119,17 @@ def __iterate_over_patch(index, patch_indexes_by_pixel, patch_position_x, patch_
         patch_indexes_by_pixel[(row, column)].add(index)
 
 
-def find_max_pixel(heatmap) -> (int, int):
+def __find_max_pixel(heatmap: np.ndarray) -> (int, int):
     max_index = heatmap.argmax()
     _, heatmap_width = heatmap.shape
     return max_index - int(max_index / heatmap_width) * heatmap_width, int(max_index / heatmap_width)
 
 
-def annotate_frame(frame,
-                   heatmap,
+def annotate_frame(frame: np.ndarray,
+                   heatmap: np.ndarray,
                    threshold_delta: int = 10,
-                   margin: int = 0) -> ((int, int, int, int), cv.UMat):
-    max_pixel = find_max_pixel(heatmap)
+                   margin: int = 0) -> ((int, int, int, int), np.ndarray):
+    max_pixel = __find_max_pixel(heatmap)
     heatmap_height, heatmap_width = heatmap.shape
     mask = np.zeros((heatmap_height + 2, heatmap_width + 2), np.uint8)
     _, _, _, bounding_box = cv.floodFill(
