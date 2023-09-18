@@ -94,7 +94,7 @@ def obtain_heatmap(frame: np.ndarray,
     heatmap = np.zeros((frame_height, frame_width), np.float32)
     patch_indexes_by_pixel = defaultdict(set)
     print('Building pixel -> indexes dictionary...')
-    map_pixels_to_patch_indexes(patch_indexes_by_pixel, patches_with_positions, window_size)
+    __map_pixels_to_patch_indexes(patch_indexes_by_pixel, patches_with_positions, window_size)
     for row, column in product(range(frame_height), range(frame_width)):
         pixel_indexes = patch_indexes_by_pixel[(row, column)]
         print(f'Found indexes for pixel ({row},{column})')
@@ -106,14 +106,14 @@ def obtain_heatmap(frame: np.ndarray,
     return heatmap_rescaled.astype(np.uint8, copy=False)
 
 
-def map_pixels_to_patch_indexes(patch_indexes_by_pixel: dict,
-                                patches_with_positions: list[int, int, np.ndarray],
-                                window_size: int):
+def __map_pixels_to_patch_indexes(patch_indexes_by_pixel: dict,
+                                  patches_with_positions: list[int, int, np.ndarray],
+                                  window_size: int):
     for index, (patch_position_y, patch_position_x, _) in enumerate(patches_with_positions):
-        iterate_over_patch(index, patch_indexes_by_pixel, patch_position_x, patch_position_y, window_size)
+        __iterate_over_patch(index, patch_indexes_by_pixel, patch_position_x, patch_position_y, window_size)
 
 
-def iterate_over_patch(index, patch_indexes_by_pixel, patch_position_x, patch_position_y, window_size):
+def __iterate_over_patch(index, patch_indexes_by_pixel, patch_position_x, patch_position_y, window_size):
     for row, column in product(range(patch_position_y, patch_position_y + window_size),
                                range(patch_position_x, patch_position_x + window_size)):
         patch_indexes_by_pixel[(row, column)].add(index)
