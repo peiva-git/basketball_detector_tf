@@ -5,7 +5,6 @@ import os.path
 from typing import Any
 from random import shuffle
 
-import keras_cv.layers
 import tensorflow as tf
 import numpy as np
 
@@ -216,12 +215,6 @@ class SegmentationDatasetBuilder:
         mask = tf.cast(mask, tf.float32)
         return frame, mask
 
-    def augment_train_dataset(self):
-        self.__train_dataset = self.__train_dataset.map(
-            SegmentationDatasetAugmentor(2023),
-            num_parallel_calls=tf.data.AUTOTUNE
-        )
-
     @property
     def train_dataset(self) -> tf.data.Dataset:
         return self.__train_dataset
@@ -237,21 +230,3 @@ class SegmentationDatasetBuilder:
     def configure_datasets_for_performance(self, shuffle_buffer_size: int = 1000, input_batch_size: int = 10):
         self.__train_dataset = configure_for_performance(self.__train_dataset, shuffle_buffer_size, input_batch_size)
         self.__validation_dataset = self.__validation_dataset.batch(input_batch_size)
-
-
-class SegmentationDatasetAugmentor(tf.keras.layers.Layer):
-    def __init__(self, seed: int):
-        super().__init__()
-        self.__augment_inputs = tf.keras.Sequential([
-            keras_cv.layers.RandomFlip(rate=1.0, seed=seed),
-            keras_cv.layers.RandomCrop(height=1024, width=2048, seed=seed),
-        ])
-        self.__augment_masks = tf.keras.Sequential([
-            keras_cv.layers.RandomFlip(rate=1.0, seed=seed),
-            keras_cv.layers.RandomCrop(height=1024, width=2048, seed=seed),
-        ])
-
-    def call(self, inputs, masks, **kwargs):
-        inputs = self.__augment_inputs(inputs)
-        masks = self.__augment_masks(masks)
-        return inputs, masks
