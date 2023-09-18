@@ -6,7 +6,7 @@ from basketballdetector.data import ClassificationDatasetBuilder, SegmentationDa
 
 class ClassificationDatasetBuilderTestCase(unittest.TestCase):
     __NUMBER_OF_SAMPLES = 18
-    __BUILDER = ClassificationDatasetBuilder('../../assets/test-sample-data-detector', validation_percentage=0.5)
+    __BUILDER = ClassificationDatasetBuilder('../assets/test-sample-data-classification', validation_percentage=0.5)
 
     def test_image_count(self):
         self.assertEqual(
@@ -48,7 +48,7 @@ class ClassificationDatasetBuilderTestCase(unittest.TestCase):
 
 class SegmentationDatasetBuilderTestCase(unittest.TestCase):
     __NUMBER_OF_SAMPLES = 36
-    __BUILDER = SegmentationDatasetBuilder('../../assets/test-sample-data-segmentation/', validation_percentage=0.5)
+    __BUILDER = SegmentationDatasetBuilder('../assets/test-sample-data-segmentation/', validation_percentage=0.5)
 
     def test_samples_count(self):
         self.assertEqual(
