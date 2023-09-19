@@ -16,6 +16,18 @@ def obtain_predictions(frame: np.ndarray,
                        model_path: str,
                        stride: int = 5,
                        window_size: int = 50) -> ([int, int, np.ndarray], [int, int]):
+    """
+    Obtain predictions for a binary classifier, applied to each patch of the frame.
+    Patches are obtained using the `basketballdetector.tasks.predicting.utils.divide_frame_into_patches` function.
+    :param frame: Frame to obtain the patches from.
+    :param model_path: Path to the saved binary classifier model.
+    :param stride: Stride size in pixels.
+    :param window_size: Window size in pixels.
+    :return: The obtained patches
+    (same as returned by `basketballdetector.tasks.predicting.utils.divide_frame_into_patches`)
+    and the obtained predictions. For each patch there are two predicted probabilities.
+    The first represents the probability that the patch contains a ball.
+    """
     model_path = pathlib.Path(model_path)
     patches_with_positions = divide_frame_into_patches(frame, stride=stride, window_size=window_size)
     patches_only = [element[2] for element in patches_with_positions]
@@ -28,7 +40,17 @@ def obtain_predictions(frame: np.ndarray,
 def obtain_heatmap(frame: np.ndarray,
                    predictions: list[(int, int)],
                    patches_with_positions: list[(int, int, np.ndarray)],
-                   window_size: int = 50):
+                   window_size: int = 50) -> np.ndarray:
+    """
+    Obtain a detection heatmap from the provided predictions and patches. This function assumes that the predictions and
+    the patches have the same ordering.
+    :param frame: Frame to obtain the heatmap from
+    :param predictions: Prediction scores for each patch, as returned by `obtain_predictions`
+    :param patches_with_positions: Frame patches, as returned by
+     `basketballdetector.tasks.predicting.utils.divide_frame_into_patches`
+    :param window_size: Window size in pixels
+    :return: The detection heatmap for the given frame
+    """
     frame_height, frame_width, _ = frame.shape
     heatmap = np.zeros((frame_height, frame_width), np.float32)
     patch_indexes_by_pixel = defaultdict(set)
@@ -61,6 +83,13 @@ def __iterate_over_patch(index, patch_indexes_by_pixel, patch_position_x, patch_
 def write_detections_video(input_video_path: str,
                            target_video_path: str,
                            model_path: str):
+    """
+    Write a video file, where all the frames have been annotated (in case a ball has been detected).
+    :param input_video_path: Video to be annotated
+    :param target_video_path: Where to save the created video file
+    :param model_path: Path to the binary classifier model
+    :return: None
+    """
     input_path = pathlib.Path(input_video_path)
     target_path = pathlib.Path(target_video_path)
     model_path = pathlib.Path(model_path)
@@ -101,6 +130,13 @@ def write_detections_video(input_video_path: str,
 def write_image_sequence_from_video(input_video_path: str,
                                     target_directory_path: str,
                                     model_path: str):
+    """
+    Write a sequence of images, where all the frames have been annotated (in case a ball was detected).
+    :param input_video_path: Video to be annotated
+    :param target_directory_path: Where to save the annotated frames
+    :param model_path: Path to the binary classifier model
+    :return: None
+    """
     input_path = pathlib.Path(input_video_path)
     target_path = pathlib.Path(target_directory_path)
     model_path = pathlib.Path(model_path)
