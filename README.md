@@ -60,3 +60,6 @@ python -m pip install -v -e .
 
 More information about what development mode is can be found
 [here](https://setuptools.pypa.io/en/latest/userguide/development_mode.html).
+**Please note** that if you're not using a conda environment you still need to
+manually set up the appropriate CUDA runtime API version in order to be able to
+use GPU acceleration.
