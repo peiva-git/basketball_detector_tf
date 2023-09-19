@@ -1,7 +1,7 @@
 # Basketball Detector
 
 :basketball: **BasketballDetector** is a deep-learning based tool
-that enables automatic ball detection in basketball broadcast videos.
+that enables automatic ball detection in basketball broadcasting videos.
 
 This repository contains the **BasketballDetector** implementation using a
 classification approach instead of a segmentation one.
@@ -24,7 +24,7 @@ Alternatively, you can simply import and use the same
 environment that was used during development.
 Using the provided [conda environment file](conda/tf-environment.yml) run:
 ```shell
-conda create --name myenv --file tf.environment.yml
+conda create --name myenv-tf --file tf.environment.yml
 ```
 Don't forget to set up the required environment variables as well:
 ```shell
