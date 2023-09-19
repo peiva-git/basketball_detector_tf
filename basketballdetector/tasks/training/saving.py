@@ -3,9 +3,11 @@ import os
 
 def save_models(model_wrapper):
     """
-    Save the provided model in the Keras, TF and HDF5 formats
-    :param model_wrapper: The model to be saved. Must be an instance of one of the models provided in
-    :return:
+    Save the provided model in the Keras, TF and HDF5 formats.
+    The models will be saved in the `out/models` directory.
+    :param model_wrapper: The model to be saved. Must be an instance of one of the models provided in the
+    `basketballdetector.models` package.
+    :return: None
     """
     model_wrapper.model.save(
         filepath=os.path.join('out', 'models', 'Keras_v3', model_wrapper.model_name + '.keras')
