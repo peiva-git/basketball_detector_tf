@@ -19,9 +19,10 @@ def train_and_save_model(dataset_path: str,
                          epochs: int = 100,
                          early_stop_patience: int = 10,
                          reduce_lr_patience: int = 5,
-                         checkpoint_save_frequency: int = 10000):
+                         checkpoint_save_frequency=10000):
     """
-    Train a MobileNet binary classifier. After the training is completed, the model is saved using the
+    Train a MobileNet binary classifier with an SGD optimizer.
+    After the training is completed, the model is saved using the
     `basketballdetector.tasks.training.saving.save_models` function.
     :param dataset_path: The path to the dataset root. The dataset structure must comply to the specifications
     provided by the `basketballdetector.data.sequence_builders.ClassificationSequenceBuilder` class
