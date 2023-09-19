@@ -15,7 +15,7 @@ proved more accurate and way faster.
 
 ## Project requirements
 
-This project uses `tensorflow==2.13.*`. Instructions on how to properly set up
+This project requires `tensorflow==2.13.*`. Instructions on how to properly set up
 a working environment can be found on the
 [official page](https://www.tensorflow.org/install/pip).
 
@@ -60,6 +60,8 @@ python -m pip install -v -e .
 
 More information about what development mode is can be found
 [here](https://setuptools.pypa.io/en/latest/userguide/development_mode.html).
-**Please note** that if you're not using a conda environment you still need to
+**Please note** that if you're not using a
+[conda](https://docs.conda.io/projects/conda/en/latest/index.html)
+environment you still need to
 manually set up the appropriate CUDA runtime API version in order to be able to
 use GPU acceleration.
