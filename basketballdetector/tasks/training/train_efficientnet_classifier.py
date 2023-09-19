@@ -30,7 +30,7 @@ def train_and_save_model(dataset_path: str,
     :param validation_percentage: Percentage of images to be used as validation.
     The remaining images will be used for training
     :param learning_rate: Learning rate of the optimizer function
-    :param epochs: Number of epochs o train the model
+    :param epochs: Number of epochs to train the model
     :param early_stop_patience: Number of epochs to wait before stopping the training in case of no improvement.
     For more details, take a look here https://keras.io/api/callbacks/early_stopping/
     :param reduce_lr_patience: Number of epochs to wait before reducing the learning rate in case if no improvement.
@@ -79,7 +79,7 @@ def train_and_save_model(dataset_path: str,
 
 if __name__ == '__main__':
     train_and_save_model(
-        '/home/ubuntu/dataset_classification/pallacanestro_trieste',
+        '/home/ubuntu/classification_dataset/pallacanestro_trieste',
         batch_size=8,
         image_width=112,
         image_height=112
