@@ -18,7 +18,13 @@ def _configure_for_performance(dataset: tf.data.Dataset, buffer_size: int, batch
 
 
 class ClassificationDatasetBuilder:
-    def __init__(self, data_directory: str, validation_percentage: float = 0.2):
+    def __init__(self,
+                 data_directory: str,
+                 image_width: int,
+                 image_height: int,
+                 validation_percentage: float = 0.2):
+        self.__image_width = image_width
+        self.__image_height = image_height
         data_path = pathlib.Path(data_directory)
         all_images_dataset = tf.data.Dataset.list_files(str(data_path / '*/*/*/*'), seed=2023)
         self.__image_count = tf.data.experimental.cardinality(all_images_dataset).numpy()
@@ -64,7 +70,7 @@ class ClassificationDatasetBuilder:
     def __get_image_label_pair_from_path(self, file_path: tf.Tensor) -> (Any, int):
         label = self.__get_label(file_path)
         image_data = tf.io.read_file(file_path)
-        image = decode_image(image_data, image_width=112, image_height=112)
+        image = decode_image(image_data, image_width=self.__image_width, image_height=self.__image_height)
         return image, label
 
     def configure_datasets_for_performance(self, shuffle_buffer_size: int = 10000, input_batch_size: int = 32):
@@ -75,7 +81,11 @@ class ClassificationDatasetBuilder:
 class SegmentationDatasetBuilder:
     def __init__(self,
                  data_directory: str,
+                 image_width: int,
+                 image_height: int,
                  validation_percentage: float = 0.2):
+        self.__image_width = image_width
+        self.__image_height = image_height
         data_path = pathlib.Path(data_directory)
         input_image_paths = [
             input_image_path
@@ -135,12 +145,11 @@ class SegmentationDatasetBuilder:
         print(f'{self.__train_dataset.cardinality().numpy()} frames in training dataset')
         print(f'{self.__validation_dataset.cardinality().numpy()} frames in validation dataset')
 
-    @staticmethod
-    def __get_frame_and_mask_from_filepaths(frame_filepath: tf.Tensor, mask_filepath: tf.Tensor):
+    def __get_frame_and_mask_from_filepaths(self, frame_filepath: tf.Tensor, mask_filepath: tf.Tensor):
         frame_data = tf.io.read_file(frame_filepath)
         mask_data = tf.io.read_file(mask_filepath)
-        frame = decode_image(frame_data, image_width=1024, image_height=512)
-        mask = decode_image(mask_data, image_width=1024, image_height=512, channels=1)
+        frame = decode_image(frame_data, image_width=self.__image_width, image_height=self.__image_height)
+        mask = decode_image(mask_data, image_width=self.__image_width, image_height=self.__image_height, channels=1)
         # 2 as the number of classes
         mask = tf.one_hot(tf.cast(mask, tf.uint8), 2)
         mask = tf.squeeze(mask)

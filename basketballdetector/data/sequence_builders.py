@@ -12,7 +12,14 @@ from .utils import decode_image
 
 
 class ClassificationSequenceBuilder:
-    def __init__(self, data_directory: str, batch_size: int, validation_percentage: float = 0.2):
+    def __init__(self,
+                 data_directory: str,
+                 batch_size: int,
+                 image_width: int,
+                 image_height: int,
+                 validation_percentage: float = 0.2):
+        self.__image_width = image_width
+        self.__image_height = image_height
         data_path = pathlib.Path(data_directory)
         print('Gathering all image paths...')
         image_paths = [
@@ -26,8 +33,20 @@ class ClassificationSequenceBuilder:
         training_paths = image_paths[validation_size:]
         print(f'{len(validation_paths)} images in validation dataset')
         print(f'{len(training_paths)} images in training dataset')
-        self.__training_sequence = _ClassificationSequence(data_directory, training_paths, batch_size)
-        self.__validation_sequence = _ClassificationSequence(data_directory, validation_paths, batch_size)
+        self.__training_sequence = _ClassificationSequence(
+            data_directory,
+            training_paths,
+            batch_size,
+            image_width,
+            image_height
+        )
+        self.__validation_sequence = _ClassificationSequence(
+            data_directory,
+            validation_paths,
+            batch_size,
+            image_width,
+            image_height
+        )
 
     @property
     def training_sequence(self):
@@ -39,8 +58,15 @@ class ClassificationSequenceBuilder:
 
 
 class _ClassificationSequence(tf.keras.utils.Sequence):
-    def __init__(self, data_directory: str, images_paths: list[str], batch_size: int):
+    def __init__(self,
+                 data_directory: str,
+                 images_paths: list[str],
+                 batch_size: int,
+                 image_width: int,
+                 image_height: int):
         data_path = pathlib.Path(data_directory)
+        self.__image_width = image_width
+        self.__image_height = image_height
         self.__batch_size = batch_size
         self.__image_paths = images_paths
         self.__class_names = np.unique(sorted([item.name for item in data_path.glob('*/*/*')]))
@@ -68,10 +94,9 @@ class _ClassificationSequence(tf.keras.utils.Sequence):
         one_hot = parts[-2] == self.__class_names
         return tf.one_hot(tf.argmax(one_hot), 2)
 
-    @staticmethod
-    def __get_image(file_path: tf.Tensor):
+    def __get_image(self, file_path: tf.Tensor):
         image_data = tf.io.read_file(file_path)
-        return decode_image(image_data, image_width=112, image_height=112, channels=3)
+        return decode_image(image_data, image_width=self.__image_width, image_height=self.__image_height, channels=3)
 
     @property
     def class_names(self):
