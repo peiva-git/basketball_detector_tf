@@ -9,7 +9,7 @@ import tensorflow as tf
 import numpy as np
 
 from basketballdetector.data import PatchesSequence
-from basketballdetector.tasks.predicting import divide_frame_into_patches, annotate_frame
+from .utils import divide_frame_into_patches, annotate_frame
 
 
 def obtain_predictions(frame: np.ndarray,

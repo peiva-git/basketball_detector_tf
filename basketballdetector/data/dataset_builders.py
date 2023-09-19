@@ -6,7 +6,7 @@ from typing import Any
 import tensorflow as tf
 import numpy as np
 
-from basketballdetector.data.utils import decode_image
+from .utils import decode_image
 
 
 def _configure_for_performance(dataset: tf.data.Dataset, buffer_size: int, batch_size: int) -> tf.data.Dataset:

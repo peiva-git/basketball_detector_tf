@@ -4,7 +4,7 @@ from basketballdetector.data import ClassificationSequenceBuilder
 
 import tensorflow as tf
 
-from basketballdetector.tasks.training.saving import save_models
+from .saving import save_models
 
 
 def train_and_save_model():

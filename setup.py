@@ -12,7 +12,7 @@ dependencies = [
     'opencv-python==4.5.*',
     'nvidia-cudnn-cu11==8.6.0.163',
     'statistics',
-    'parameterized'
+    'parameterized',
 ]
 
 setup(

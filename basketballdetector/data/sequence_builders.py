@@ -8,7 +8,7 @@ from random import shuffle
 import tensorflow as tf
 import numpy as np
 
-from basketballdetector.data.utils import decode_image
+from .utils import decode_image
 
 
 class ClassificationSequenceBuilder:

@@ -3,7 +3,7 @@ import tensorflow as tf
 from basketballdetector.data import SegmentationDatasetBuilder
 from basketballdetector.models import UNet
 from basketballdetector.models.callbacks import get_segmentation_model_callbacks
-from basketballdetector.tasks.training.saving import save_models
+from .saving import save_models
 
 
 def train_and_save_model():
