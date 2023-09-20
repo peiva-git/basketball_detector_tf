@@ -1,3 +1,21 @@
+"""
+This module contains all the classes used to build te datasets for this project.
+It is assumed that the datasets' structure is as follows:
+1. **For classification datasets**: starting from the root directory, the images are organized in the following
+directory structure:
+    1. [season]/[match]/ball for patches that represent a ball
+    2. [season]/[match]/no_ball for patches that don't represent a ball
+
+The same game may be played in different seasons.
+2. **For segmentation datasets**: starting from the root directory, the images and masks are organized in the following
+directory structure:
+    1. [season]/[match]/frames for the video frames
+    2. [season]/[match]/masks for the corresponding masks
+
+The same game may be played in different seasons. The correspondences between frames and masks are determined by
+the frame index.
+"""
+
 import glob
 import pathlib
 import os.path
@@ -18,6 +36,9 @@ def _configure_for_performance(dataset: tf.data.Dataset, buffer_size: int, batch
 
 
 class ClassificationDatasetBuilder:
+    """
+    Class used to build a classification dataset for this project
+    """
     def __init__(self,
                  data_directory: str,
                  image_width: int,
@@ -48,18 +69,36 @@ class ClassificationDatasetBuilder:
 
     @property
     def number_of_images(self) -> int:
+        """
+        This method returns the number of images contained in this dataset
+        :return: The number of images loaded into the dataset
+        """
         return self.__image_count
 
     @property
     def class_names(self) -> [str, str]:
+        """
+        This method returns the classifier's classes obtained from the directory structure
+        :return: The classes to be used by the classifier
+        """
         return self.__class_names
 
     @property
     def train_dataset(self) -> tf.data.Dataset:
+        """
+        This method returns the training dataset.
+        It is a portion of the whole (shuffled) dataset, obtained based on the validation_percentage parameter
+        :return: The training dataset
+        """
         return self.__train_dataset
 
     @property
     def validation_dataset(self) -> tf.data.Dataset:
+        """
+        This method returns the validation dataset.
+        It is a portion of the whole (shuffled) dataset, obtained based on the validation_percentage parameter
+        :return: The validation dataset
+        """
         return self.__validation_dataset
 
     def __get_label(self, file_path: tf.Tensor) -> int:
@@ -74,6 +113,12 @@ class ClassificationDatasetBuilder:
         return image, label
 
     def configure_datasets_for_performance(self, shuffle_buffer_size: int = 10000, input_batch_size: int = 32):
+        """
+        This method sets some optimizations for the training and validation datasets, in order to improve performance
+        :param shuffle_buffer_size: Size of the shuffle buffer to be used with the training dataset
+        :param input_batch_size: Input batch size for both datasets
+        :return: None
+        """
         self.__train_dataset = _configure_for_performance(self.__train_dataset, shuffle_buffer_size, input_batch_size)
         self.__validation_dataset = self.__validation_dataset.batch(input_batch_size)
 
