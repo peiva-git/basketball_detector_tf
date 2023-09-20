@@ -1,3 +1,7 @@
+"""
+This module contains all the functions required to predict the ball location starting from a single frame
+"""
+
 import pathlib
 import time
 from collections import defaultdict

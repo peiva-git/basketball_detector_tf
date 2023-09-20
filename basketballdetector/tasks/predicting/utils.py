@@ -1,3 +1,7 @@
+"""
+This module contains all the utility functions used by the other modules in this package
+"""
+
 import pathlib
 
 import cv2 as cv
