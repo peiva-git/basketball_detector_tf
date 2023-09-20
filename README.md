@@ -10,8 +10,8 @@ with simple segmentation models implemented in
 [tensorflow](https://www.tensorflow.org/) from scratch.
 
 Please note that **this work has been discarded** in favor of the
-segmentation approach using SOTA real-time segmentation models, which
-proved more accurate and way faster.
+[segmentation approach](https://github.com/peiva-git/basketball_detector) 
+using SOTA real-time segmentation models, which proved more accurate and way faster.
 
 ## Project requirements
 
