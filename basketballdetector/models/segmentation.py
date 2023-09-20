@@ -8,7 +8,7 @@ from tensorflow import keras
 class UNet:
     """
     This class represents an implementation of the UNet model.
-    It is  based on this tutorial https://keras.io/examples/vision/oxford_pets_image_segmentation/#model-architecture
+    It is  based on [this tutorial](https://keras.io/examples/vision/oxford_pets_image_segmentation/#model-architecture)
     """
     def __init__(self, input_shape: (int, int, int) = (512, 1024, 3), number_of_classes: int = 2):
         inputs = keras.Input(shape=input_shape)

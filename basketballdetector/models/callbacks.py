@@ -14,15 +14,15 @@ def get_classification_model_callbacks(
         checkpoint_save_frequency) -> [tf.keras.callbacks.Callback]:
     """
     This function returns a list of the following callbacks:
-    1. ModelCheckpoint https://keras.io/api/callbacks/model_checkpoint/
-    2. BackupAndRestore https://keras.io/api/callbacks/backup_and_restore/
-    3. EarlyStopping https://keras.io/api/callbacks/early_stopping/
-    4. TensorBoard https://keras.io/api/callbacks/tensorboard/
-    5. ReduceLROnPlateau https://keras.io/api/callbacks/reduce_lr_on_plateau/
+    1. [ModelCheckpoint](https://keras.io/api/callbacks/model_checkpoint/)
+    2. [BackupAndRestore](https://keras.io/api/callbacks/backup_and_restore/)
+    3. [EarlyStopping](https://keras.io/api/callbacks/early_stopping/)
+    4. [TensorBoard](https://keras.io/api/callbacks/tensorboard/)
+    5. [ReduceLROnPlateau](https://keras.io/api/callbacks/reduce_lr_on_plateau/)
     :param model_name: The model name. Used to know where to save the callbacks' outputs
-    :param early_stop_patience: See https://keras.io/api/callbacks/early_stopping/
-    :param reduce_lr_patience: See https://keras.io/api/callbacks/reduce_lr_on_plateau/
-    :param checkpoint_save_frequency: See https://keras.io/api/callbacks/model_checkpoint/
+    :param early_stop_patience: See the [official docs](https://keras.io/api/callbacks/early_stopping/)
+    :param reduce_lr_patience: See the [official docs](https://keras.io/api/callbacks/reduce_lr_on_plateau/)
+    :param checkpoint_save_frequency: See the [official docs](https://keras.io/api/callbacks/model_checkpoint/)
     :return: A list of `Callback`s
     """
     model_dir_path = os.path.join('out', 'training-callback-results', model_name)
@@ -63,15 +63,15 @@ def get_segmentation_model_callbacks(
         checkpoint_save_frequency) -> [tf.keras.callbacks.Callback]:
     """
     This function returns a list of the following callbacks:
-    1. ModelCheckpoint https://keras.io/api/callbacks/model_checkpoint/
-    2. BackupAndRestore https://keras.io/api/callbacks/backup_and_restore/
-    3. EarlyStopping https://keras.io/api/callbacks/early_stopping/
-    4. TensorBoard https://keras.io/api/callbacks/tensorboard/
-    5. ReduceLROnPlateau https://keras.io/api/callbacks/reduce_lr_on_plateau/
+    1. [ModelCheckpoint](https://keras.io/api/callbacks/model_checkpoint/)
+    2. [BackupAndRestore](https://keras.io/api/callbacks/backup_and_restore/)
+    3. [EarlyStopping](https://keras.io/api/callbacks/early_stopping/)
+    4. [TensorBoard](https://keras.io/api/callbacks/tensorboard/)
+    5. [ReduceLROnPlateau](https://keras.io/api/callbacks/reduce_lr_on_plateau/)
     :param model_name: The model name. Used to know where to save the callbacks' outputs
-    :param early_stop_patience: See https://keras.io/api/callbacks/early_stopping/
-    :param reduce_lr_patience: See https://keras.io/api/callbacks/reduce_lr_on_plateau/
-    :param checkpoint_save_frequency: See https://keras.io/api/callbacks/model_checkpoint/
+    :param early_stop_patience: See the [official docs](https://keras.io/api/callbacks/early_stopping/)
+    :param reduce_lr_patience: See the [official docs](https://keras.io/api/callbacks/reduce_lr_on_plateau/)
+    :param checkpoint_save_frequency: See the [official docs](https://keras.io/api/callbacks/model_checkpoint/)
     :return: A list of `Callback`s
     """
     model_dir_path = os.path.join('out', 'training-callback-results', model_name)

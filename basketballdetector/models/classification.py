@@ -8,7 +8,7 @@ import tensorflow as tf
 class SimpleClassifier:
     """
     This class represents a simple classifier used for testing and experiments.
-    It is based on this tutorial https://www.tensorflow.org/tutorials/images/classification#a_basic_keras_model
+    It is based [on this tutorial](https://www.tensorflow.org/tutorials/images/classification#a_basic_keras_model)
     """
     def __init__(self,
                  number_of_classes: int = 2,

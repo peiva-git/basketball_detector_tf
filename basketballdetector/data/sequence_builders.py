@@ -1,7 +1,7 @@
 """
 This module contains all the classes used to build sequence datasets for this project.
 Sequence datasets are based on the Sequence Keras class.
-More information can be found here https://www.tensorflow.org/api_docs/python/tf/keras/utils/Sequence.
+More information can be found [here](https://www.tensorflow.org/api_docs/python/tf/keras/utils/Sequence).
 It is assumed that the datasets' structure is as follows:
 1. **For classification datasets**: starting from the root directory, the images are organized in the following
 directory structure:

@@ -1,3 +1,8 @@
+"""
+This module is used to train an UNet binary segmentor.
+It can be executed as a script to run with default parameters.
+"""
+
 import pathlib
 
 import tensorflow as tf
@@ -28,7 +33,7 @@ def train_and_save_model(dataset_path: str,
     provided by the `basketballdetector.data.dataset_builders.SegmentationDatasetBuilder` class
     :param batch_size: Batch size used by the Dataset
     :param shuffle_buffer_size: Size of the shuffle buffer.
-    See https://www.tensorflow.org/api_docs/python/tf/data/Dataset#shuffle
+    See [here](https://www.tensorflow.org/api_docs/python/tf/data/Dataset#shuffle)
     :param image_width: Dataset image width
     :param image_height: Dataset image height
     :param validation_percentage: Percentage of images to be used as validation.
@@ -37,12 +42,12 @@ def train_and_save_model(dataset_path: str,
     :param momentum: Momentum of the optimizer function
     :param epochs: Number of epochs to train the model
     :param early_stop_patience: Number of epochs to wait before stopping the training in case of no improvement.
-    For more details, take a look here https://keras.io/api/callbacks/early_stopping/
+    For more details, take a look [here](https://keras.io/api/callbacks/early_stopping/)
     :param reduce_lr_patience: Number of epochs to wait before reducing the learning rate in case if no improvement.
-    For more details, take a look here https://keras.io/api/callbacks/reduce_lr_on_plateau/
+    For more details, take a look [here](https://keras.io/api/callbacks/reduce_lr_on_plateau/)
     :param checkpoint_save_frequency: A model checkpoint will be saved in out/training-callback-results after
     the specified number of iterations. You can also specify 'epoch' instead.
-    See https://keras.io/api/callbacks/model_checkpoint/
+    See [here](https://keras.io/api/callbacks/model_checkpoint/)
     :return: None
     """
     dataset_dir = pathlib.Path(dataset_path)
