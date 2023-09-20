@@ -1,5 +1,5 @@
 """
-This module contains all the classes used to build te datasets for this project.
+This module contains all the classes used to build the datasets for this project.
 It is assumed that the datasets' structure is as follows:
 1. **For classification datasets**: starting from the root directory, the images are organized in the following
 directory structure:

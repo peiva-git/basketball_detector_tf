@@ -1,3 +1,23 @@
+"""
+This module contains all the classes used to build sequence datasets for this project.
+Sequence datasets are based on the Sequence Keras class.
+More information can be found here https://www.tensorflow.org/api_docs/python/tf/keras/utils/Sequence.
+It is assumed that the datasets' structure is as follows:
+1. **For classification datasets**: starting from the root directory, the images are organized in the following
+directory structure:
+    1. [season]/[match]/ball for patches that represent a ball
+    2. [season]/[match]/no_ball for patches that don't represent a ball
+
+The same game may be played in different seasons.
+2. **For segmentation datasets**: starting from the root directory, the images and masks are organized in the following
+directory structure:
+    1. [season]/[match]/frames for the video frames
+    2. [season]/[match]/masks for the corresponding masks
+
+The same game may be played in different seasons. The correspondences between frames and masks are determined by
+the frame index.
+"""
+
 import pathlib
 import glob
 import math
@@ -12,6 +32,9 @@ from .utils import decode_image
 
 
 class ClassificationSequenceBuilder:
+    """
+    Class used to build a classification sequence dataset for this project
+    """
     def __init__(self,
                  data_directory: str,
                  batch_size: int,
@@ -50,10 +73,24 @@ class ClassificationSequenceBuilder:
 
     @property
     def training_sequence(self):
+        """
+        This method returns the training sequence.
+        It is a portion of the whole (shuffled) dataset, obtained based on the validation_percentage parameter.
+        Instead of loading the whole dataset into memory before training, the Sequence class only loads subsequent
+        batches of data.
+        :return: The training sequence
+        """
         return self.__training_sequence
 
     @property
     def validation_sequence(self):
+        """
+        This method returns the validation sequence.
+        It is a portion of the whole (shuffled) dataset, obtained based on the validation_percentage parameter.
+        Instead of loading the whole dataset into memory before validation, the Sequence class only loads subsequent
+        batches of data.
+        :return: The validation sequence
+        """
         return self.__validation_sequence
 
 
@@ -104,7 +141,11 @@ class _ClassificationSequence(tf.keras.utils.Sequence):
 
 
 class PatchesSequence(tf.keras.utils.Sequence):
-
+    """
+    This class is used to build a sequence from the patches obtained from the
+    `basketballdetector.tasks.predicting.utils.divide_frame_into_patches` function.
+    The sequence can then be used to perform prediction using a Keras model.
+    """
     def __init__(self, patches: list[np.ndarray], batch_size: int = 64):
         self.__patches = patches
         self.__batch_size = batch_size
