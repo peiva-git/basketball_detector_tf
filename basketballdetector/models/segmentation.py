@@ -1,7 +1,15 @@
+"""
+This module contains all the implemented segmentation models
+"""
+
 from tensorflow import keras
 
 
 class UNet:
+    """
+    This class represents an implementation of the UNet model.
+    It is  based on this tutorial https://keras.io/examples/vision/oxford_pets_image_segmentation/#model-architecture
+    """
     def __init__(self, input_shape: (int, int, int) = (512, 1024, 3), number_of_classes: int = 2):
         inputs = keras.Input(shape=input_shape)
         x = keras.layers.Rescaling(1. / 255, input_shape=input_shape)(inputs)
@@ -61,8 +69,16 @@ class UNet:
 
     @property
     def model(self):
+        """
+        This method returns the actual model
+        :return: The model
+        """
         return self.__model
 
     @property
     def model_name(self):
+        """
+        This method returns the model's name
+        :return: The model's name
+        """
         return self.__model_name
