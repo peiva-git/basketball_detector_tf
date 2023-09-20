@@ -41,7 +41,7 @@ def train_and_save_model(dataset_path: str,
     For more details, take a look [here](https://keras.io/api/callbacks/early_stopping/)
     :param reduce_lr_patience: Number of epochs to wait before reducing the learning rate in case if no improvement.
     For more details, take a look [here](https://keras.io/api/callbacks/reduce_lr_on_plateau/)
-    :param checkpoint_save_frequency: A model checkpoint will be saved in out/training-callback-results after
+    :param checkpoint_save_frequency: A model checkpoint will be saved in `out/training-callback-results` after
     the specified number of iterations. You can also specify 'epoch' instead.
     See [here](https://keras.io/api/callbacks/model_checkpoint/)
     :return: None

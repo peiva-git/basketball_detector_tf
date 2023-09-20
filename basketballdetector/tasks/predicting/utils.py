@@ -81,7 +81,8 @@ def annotate_frame_with_ball_patches(frame: np.ndarray,
 
     :param frame: Frame to annotate.
     :param patches_with_positions: List of patches obtained from `divide_frame_into_patches`
-    :param predictions: Predictions obtained from `basketballdetector.tasks.predicting.obtain_predictions`
+    :param predictions: Predictions obtained from
+    `basketballdetector.tasks.predicting.predict_ball_locations.obtain_predictions`
     :param window_size: Window size in pixels
     :param threshold: A prediction score above this threshold will be considered a ball candidate.
     Note that the prediction scores are results of a softmax layers, so they represent a probability distribution.
