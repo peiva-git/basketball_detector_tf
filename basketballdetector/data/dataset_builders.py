@@ -126,6 +126,9 @@ class ClassificationDatasetBuilder:
 
 
 class SegmentationDatasetBuilder:
+    """
+    Class used to build a segmentation dataset for this project
+    """
     def __init__(self,
                  data_directory: str,
                  image_width: int,
@@ -207,17 +210,37 @@ class SegmentationDatasetBuilder:
 
     @property
     def train_dataset(self) -> tf.data.Dataset:
+        """
+        This method returns the training dataset.
+        It is a portion of the whole (shuffled) dataset, obtained based on the validation_percentage parameter
+        :return: The training dataset
+        """
         return self.__train_dataset
 
     @property
     def validation_dataset(self) -> tf.data.Dataset:
+        """
+        This method returns the validation dataset.
+        It is a portion of the whole (shuffled) dataset, obtained based on the validation_percentage parameter
+        :return: The validation dataset
+        """
         return self.__validation_dataset
 
     @property
     def number_of_samples(self) -> int:
+        """
+        This method returns the number of samples contained in this dataset
+        :return: The number of image, mask pairs loaded into the dataset
+        """
         return self.__train_dataset.cardinality().numpy() + self.__validation_dataset.cardinality().numpy()
 
     def configure_datasets_for_performance(self, shuffle_buffer_size: int = 1000, input_batch_size: int = 10):
+        """
+        This method sets some optimizations for the training and validation datasets, in order to improve performance
+        :param shuffle_buffer_size: Size of the shuffle buffer to be used with the training dataset
+        :param input_batch_size: Input batch size for both datasets
+        :return: None
+        """
         self.__train_dataset = _configure_for_performance(self.__train_dataset, shuffle_buffer_size, input_batch_size)
         self.__validation_dataset = self.__validation_dataset.cache()
         self.__validation_dataset = self.__validation_dataset.batch(input_batch_size)
