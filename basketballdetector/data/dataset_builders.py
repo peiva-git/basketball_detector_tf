@@ -120,7 +120,9 @@ class ClassificationDatasetBuilder:
         :return: None
         """
         self.__train_dataset = _configure_for_performance(self.__train_dataset, shuffle_buffer_size, input_batch_size)
+        self.__validation_dataset = self.__validation_dataset.cache()
         self.__validation_dataset = self.__validation_dataset.batch(input_batch_size)
+        self.__validation_dataset = self.__validation_dataset.prefetch(buffer_size=tf.data.AUTOTUNE)
 
 
 class SegmentationDatasetBuilder:
@@ -190,7 +192,9 @@ class SegmentationDatasetBuilder:
         print(f'{self.__train_dataset.cardinality().numpy()} frames in training dataset')
         print(f'{self.__validation_dataset.cardinality().numpy()} frames in validation dataset')
 
-    def __get_frame_and_mask_from_filepaths(self, frame_filepath: tf.Tensor, mask_filepath: tf.Tensor):
+    def __get_frame_and_mask_from_filepaths(self,
+                                            frame_filepath: tf.Tensor,
+                                            mask_filepath: tf.Tensor) -> (tf.Tensor, tf.Tensor):
         frame_data = tf.io.read_file(frame_filepath)
         mask_data = tf.io.read_file(mask_filepath)
         frame = decode_image(frame_data, image_width=self.__image_width, image_height=self.__image_height)
@@ -215,4 +219,6 @@ class SegmentationDatasetBuilder:
 
     def configure_datasets_for_performance(self, shuffle_buffer_size: int = 1000, input_batch_size: int = 10):
         self.__train_dataset = _configure_for_performance(self.__train_dataset, shuffle_buffer_size, input_batch_size)
+        self.__validation_dataset = self.__validation_dataset.cache()
         self.__validation_dataset = self.__validation_dataset.batch(input_batch_size)
+        self.__validation_dataset = self.__validation_dataset.prefetch(buffer_size=tf.data.AUTOTUNE)
