@@ -1,3 +1,7 @@
+"""
+This module contains utility functions used by the other modules in this package.
+"""
+
 import tensorflow as tf
 
 

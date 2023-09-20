@@ -1,7 +1,15 @@
+"""
+This module contains all the implemented classifiers.
+"""
+
 import tensorflow as tf
 
 
 class SimpleClassifier:
+    """
+    This class represents a simple classifier used for testing and experiments.
+    It is based on this tutorial https://www.tensorflow.org/tutorials/images/classification#a_basic_keras_model
+    """
     def __init__(self,
                  number_of_classes: int = 2,
                  image_width: int = 50,
@@ -22,10 +30,18 @@ class SimpleClassifier:
 
     @property
     def model(self):
+        """
+        This method returns the actual model
+        :return: The model
+        """
         return self.__model
 
     @property
     def model_name(self):
+        """
+        This method returns the model's name
+        :return: The model's name
+        """
         return self.__model_name
 
 
@@ -43,10 +59,18 @@ class ResNet152V2:
 
     @property
     def model(self):
+        """
+        This method returns the actual model
+        :return: The model
+        """
         return self.__model
 
     @property
     def model_name(self):
+        """
+        This method returns the model's name
+        :return: The model's name
+        """
         return self.__model_name
 
 
@@ -65,10 +89,18 @@ class MobileNet:
 
     @property
     def model(self):
+        """
+        This method returns the actual model
+        :return: The model
+        """
         return self.__model
 
     @property
     def model_name(self):
+        """
+        This method returns the model's name
+        :return: The model's name
+        """
         return self.__model_name
 
 
@@ -87,8 +119,16 @@ class EfficientNet:
 
     @property
     def model(self):
+        """
+        This method returns the actual model
+        :return: The model
+        """
         return self.__model
 
     @property
     def model_name(self):
+        """
+        This method returns the model's name
+        :return: The model's name
+        """
         return self.__model_name
