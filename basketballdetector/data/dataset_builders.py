@@ -44,6 +44,13 @@ class ClassificationDatasetBuilder:
                  image_width: int,
                  image_height: int,
                  validation_percentage: float = 0.2):
+        """
+        Class constructor
+        :param data_directory: Dataset root directory
+        :param image_width: Target image width
+        :param image_height: Target image height
+        :param validation_percentage: Percentage of images to be used as validation data
+        """
         self.__image_width = image_width
         self.__image_height = image_height
         data_path = pathlib.Path(data_directory)
@@ -134,6 +141,13 @@ class SegmentationDatasetBuilder:
                  image_width: int,
                  image_height: int,
                  validation_percentage: float = 0.2):
+        """
+        Class constructor
+        :param data_directory: Dataset root directory
+        :param image_width: Target image width
+        :param image_height: Target image height
+        :param validation_percentage: Percentage of images to be used as validation data
+        """
         self.__image_width = image_width
         self.__image_height = image_height
         data_path = pathlib.Path(data_directory)

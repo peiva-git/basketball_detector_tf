@@ -11,6 +11,11 @@ class UNet:
     It is  based on [this tutorial](https://keras.io/examples/vision/oxford_pets_image_segmentation/#model-architecture)
     """
     def __init__(self, input_shape: (int, int, int) = (512, 1024, 3), number_of_classes: int = 2):
+        """
+        Class constructor
+        :param input_shape: Input shape, (image_height, image_width, channels)
+        :param number_of_classes: Number of classes for this segmentor
+        """
         inputs = keras.Input(shape=input_shape)
         x = keras.layers.Rescaling(1. / 255, input_shape=input_shape)(inputs)
 

@@ -14,6 +14,12 @@ class SimpleClassifier:
                  number_of_classes: int = 2,
                  image_width: int = 50,
                  image_height: int = 50):
+        """
+        Class constructor
+        :param number_of_classes: Number of classes for this classifier
+        :param image_width: Input image width
+        :param image_height: Input image height
+        """
         self.__model = tf.keras.Sequential([
             tf.keras.layers.Rescaling(1. / 255, input_shape=(image_height, image_width, 3)),
             tf.keras.layers.Conv2D(16, 3, padding='same', activation='relu'),
@@ -50,6 +56,12 @@ class ResNet152V2:
                  number_of_classes: int = 2,
                  image_width: int = 50,
                  image_height: int = 50):
+        """
+        Class constructor
+        :param number_of_classes: Number of classes for this classifier
+        :param image_width: Input image width
+        :param image_height: Input image height
+        """
         self.__model = tf.keras.applications.ResNet152V2(
             input_shape=(image_height, image_width, 3),
             weights=None,
@@ -80,6 +92,12 @@ class MobileNet:
                  number_of_classes: int = 2,
                  image_width: int = 50,
                  image_height: int = 50):
+        """
+        Class constructor
+        :param number_of_classes: Number of classes for this classifier
+        :param image_width: Input image width
+        :param image_height: Input image height
+        """
         self.__model = tf.keras.applications.MobileNetV2(
             input_shape=(image_height, image_width, 3),
             weights=None,
@@ -110,6 +128,12 @@ class EfficientNet:
                  number_of_classes: int = 2,
                  image_width: int = 50,
                  image_height: int = 50):
+        """
+        Class constructor
+        :param number_of_classes: Number of classes for this classifier
+        :param image_width: Input image width
+        :param image_height: Input image height
+        """
         self.__model = tf.keras.applications.EfficientNetV2B0(
             input_shape=(image_height, image_width, 3),
             weights=None,

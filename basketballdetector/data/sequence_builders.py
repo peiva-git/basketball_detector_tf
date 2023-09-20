@@ -41,6 +41,14 @@ class ClassificationSequenceBuilder:
                  image_width: int,
                  image_height: int,
                  validation_percentage: float = 0.2):
+        """
+        Class constructor
+        :param data_directory: Dataset root directory
+        :param batch_size: Size of each input batch of this `Sequence`
+        :param image_width: Target image width
+        :param image_height: Target image height
+        :param validation_percentage: Percentage of images to be used as validation data
+        """
         self.__image_width = image_width
         self.__image_height = image_height
         data_path = pathlib.Path(data_directory)
@@ -147,6 +155,11 @@ class PatchesSequence(tf.keras.utils.Sequence):
     The sequence can then be used to perform prediction using a Keras model.
     """
     def __init__(self, patches: list[np.ndarray], batch_size: int = 64):
+        """
+        Class constructor
+        :param patches: List of patches' data
+        :param batch_size: Size of each input batch of this `Sequence`
+        """
         self.__patches = patches
         self.__batch_size = batch_size
 
