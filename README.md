@@ -63,5 +63,15 @@ More information about what development mode is can be found
 **Please note** that if you're not using a
 [conda](https://docs.conda.io/projects/conda/en/latest/index.html)
 environment you still need to
-manually set up the appropriate CUDA runtime API version in order to be able to
-use GPU acceleration.
+manually set up the appropriate CUDA runtime API version
+as detailed [here](https://www.tensorflow.org/install/pip#step-by-step_instructions)
+in order to be able to use GPU acceleration.
+
+## Credits
+
+This repository uses [pdoc](https://pdoc.dev/) to build the project's documentation.
+All credits go to the author.
+
+The model has been largely inspired by the paper
+[Convolutional Neural Networks Based Ball Detection in Tennis Games](https://ieeexplore.ieee.org/document/8575391).
+All credits go to the authors.
